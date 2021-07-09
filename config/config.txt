@@ -1,0 +1,25 @@
+# This is a configuration file.
+#
+# Everyhting that comes after a hash symbol '#' is considered a comment and is ignored
+# by the application. Blank lines are also ignored by the application program.
+#
+# Leading and trailing whitespaces around parameter names and parameter data fields
+# are ignored by the application program.
+#
+# The format of an expression must be PARAMETER_NAME = value
+# (whitespaces are not admitted, even if in string values).
+
+# Number of workers in the server thread pool (integer)
+WORKER_POOL_SIZE = 5
+
+# Maximum number of files that can be stored in the server storage (integer)
+STORAGE_MAX_FILE_NUMBER = 1000
+
+# Server storage capacity in bytes (integer)
+STORAGE_MAX_SIZE = 134217728
+# (128 Megabytes)
+
+# Server backlog (integer)
+BACKLOG = 32
+
+# Other parameters... (to be defined)
