@@ -1,0 +1,9 @@
+# Number of workers in the server thread pool (integer)
+WORKER_POOL_SIZE = 1
+
+# Maximum number of files that can be stored in the server storage (integer)
+STORAGE_MAX_FILE_NUMBER = 10000
+
+# Server storage capacity in bytes (integer)
+STORAGE_MAX_SIZE = 134217728
+# (128 Megabytes)
