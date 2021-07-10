@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
 static ssize_t w_command(char* w_arg, const char* D_directory, const long open_flags)
 {
   char* token,
-      * save_ptr,
+      * save_ptr = NULL,
       * w_dirname;
   w_dirname = strtok_r(w_arg, ",", &save_ptr);
 
@@ -371,7 +371,7 @@ static ssize_t visit_n_write(const char* visit_dir, const char* save_dir, const 
 static int W_command(char* W_files, const char* D_directory, const int open_flags)
 {
   char* current_file,
-      * save_ptr;
+      * save_ptr = NULL;
   current_file = strtok_r(W_files, ",", &save_ptr);
   while (current_file) {
     if (openFile(current_file, open_flags) == -1) {
@@ -419,7 +419,7 @@ static int r_command(char* r_files, const char* d_directory)
   char* file_content = NULL;
 
   char* current_file,
-      * save_ptr;
+      * save_ptr = NULL;
   size_t file_size;
 
   current_file = strtok_r(r_files, ",", &save_ptr);
@@ -489,7 +489,7 @@ static int R_command(const char* R_arg, const char* d_directory)
 static int l_command(char* l_files)
 {
   char* current_file,
-      * save_ptr;
+      * save_ptr = NULL;
   current_file = strtok_r(l_files, ",", &save_ptr);
   while (current_file) {
     if (lockFile(current_file) == -1) {
@@ -507,7 +507,7 @@ static int l_command(char* l_files)
 static int u_command(char* u_files)
 {
   char* current_file,
-      * save_ptr;
+      * save_ptr = NULL;
   current_file = strtok_r(u_files, ",", &save_ptr);
   while (current_file) {
     if (unlockFile(current_file) == -1) {
@@ -525,7 +525,7 @@ static int u_command(char* u_files)
 static int c_command(char* c_files)
 {
   char* current_file,
-      * save_ptr;
+      * save_ptr = NULL;
   current_file = strtok_r(c_files, ",", &save_ptr);
   while (current_file) {
     if (removeFile(current_file) == -1) {
