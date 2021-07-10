@@ -259,7 +259,10 @@ int main(int argc, char* argv[])
   // close shared pipe
   EXIT_ON_NEG_ONE(close(w2m_pipe[0]));
   EXIT_ON_NEG_ONE(close(w2m_pipe[1]));
-  // destroy storage
+
+  // print a summary of the operations performed in the storage
+  storage_print_summary(storage);
+  //destroy storage
   EXIT_ON_NEG_ONE(storage_destroy(storage));
 
   return 0;

@@ -6,4 +6,4 @@ STORAGE_MAX_FILE_NUMBER = 10000
 
 # Server storage capacity in bytes (integer)
 STORAGE_MAX_SIZE = 134217728
-# (128 Megabytes)
+# 128 Megabytes (1 Megabyte = 1024 Kilobytes = 1024 bytes)

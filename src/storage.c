@@ -147,6 +147,35 @@ int storage_destroy(storage_t* storage)
   return 0;
 }
 
+void storage_print_summary(storage_t* storage)
+{
+  if (!storage) {
+    return;
+  }
+  printf("\n- Storage summary -\n");
+  printf("The storage:\n");
+  printf(" - has reached the maximum number of %zu files\n", storage->max_file_number_reached);
+  printf(" - has reached a maximum size of %f Megabyte(s)\n", (float)storage->max_size_reached / 1048576);
+  printf(" - ran the replacement algorithm %zu time(s)\n", storage->replacement_counter);
+
+  // print all files in the storage
+  printf(" - currently contains the following files:\n");
+
+  // lock the storage
+  LOCK(&(storage->mutex));
+
+  file_t* current_file = storage->head;
+  for (size_t i = 1; current_file != NULL; i++) {
+    printf("      (%zu) %s\n", i, current_file->pathname);
+    current_file = current_file->next;
+  }
+
+  // unlock the storage
+  UNLOCK(&(storage->mutex));
+
+  printf("\n");
+}
+
 /**
  * Add a file to the storage
  * (assume that the storage is locked)
@@ -168,7 +197,15 @@ static void storage_add(storage_t* storage, file_t* file)
   EXIT_ON_NULL(icl_hash_insert(storage->dictionary, file->pathname, file));
 
   storage->file_number++;
+  // update max storage file_number reached
+  if (storage->file_number > storage->max_file_number_reached) {
+    storage->max_file_number_reached = storage->file_number;
+  }
   storage->size += file->size;
+  // update max storage size reached
+  if (storage->size > storage->max_size_reached) {
+    storage->max_size_reached = storage->size;
+  }
 }
 
 /**
@@ -200,6 +237,8 @@ static file_t* get_victim(storage_t* storage, const file_t* spare)
     errno = EINVAL;
     return NULL;
   }
+  // increment replacement algorithm execution counter
+  storage->replacement_counter++;
   file_t* victim = storage->head;
   while (victim) {
     if (victim != spare && victim->modified) {
@@ -674,6 +713,10 @@ int storage_append(storage_t* storage, const char* pathname, const char* new_con
 
   // update the storage size
   storage->size = storage->size - file->size + new_file_size;
+  // update max storage size reached
+  if (storage->size > storage->max_size_reached) {
+    storage->max_size_reached = storage->size;
+  }
   // update the written file
   free_item((void**)&(file->content));
   file->content = new_file_content;

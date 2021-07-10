@@ -44,6 +44,10 @@ typedef struct {
   file_t* head;
   file_t* tail;
   pthread_mutex_t mutex;
+  // used to print a summary of the operations performed
+  size_t max_file_number_reached;
+  size_t max_size_reached;
+  size_t replacement_counter;
 } storage_t;
 
 /**
@@ -64,6 +68,11 @@ storage_t* storage_create(const size_t max_file_number, const size_t max_size);
  * Return 0 on success, -1 on error (set errno)
  */
 int storage_destroy(storage_t* storage);
+
+/**
+ * Print a summary of the operations performed in the storage
+ */
+void storage_print_summary(storage_t* storage);
 
 /**
  * Copy the contents of a file into a newly allocated buffer (with optional extra space)
