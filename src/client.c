@@ -284,11 +284,13 @@ static ssize_t visit_n_write(const char* visit_dir, const char* save_dir, const 
     if ((pathname = calloc(1, sizeof(char) * (strlen(visit_dir) + 1 + strlen(entry->d_name) + 1))) == NULL) {
       goto end;
     }
-    strncpy(pathname, visit_dir, strlen(visit_dir));
+    memcpy(pathname, visit_dir, strlen(visit_dir));
     if (visit_dir[strlen(visit_dir)] != '/') {
       strncat(pathname, "/", strlen("/"));
+      memcpy(pathname + strlen(visit_dir) + 1, entry->d_name, strlen(entry->d_name));
+    } else {
+      memcpy(pathname + strlen(visit_dir), entry->d_name, strlen(entry->d_name));
     }
-    strncat(pathname, entry->d_name, strlen(entry->d_name));
 
     struct stat statbuf;
     if(stat(pathname, &statbuf) == -1) {

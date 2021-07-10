@@ -13,7 +13,7 @@ CC = gcc
 AR = ar
 STD = -std=c99
 DEBUG = -g
-OPTFLAGS = -Og
+OPTFLAGS = -O3
 WARNS = -Wextra -Wall -Werror -pedantic
 CFLAGS = $(STD) $(DEBUG) $(OPTFLAGS) $(WARNS)
 ARFLAGS = rvs

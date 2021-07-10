@@ -27,7 +27,7 @@ static file_t* file_create(const char* pathname)
   if ((new_file->pathname = calloc(1, sizeof(char) * (strlen(pathname) + 1))) == NULL) {
     goto end;
   }
-  strncpy(new_file->pathname, pathname, strlen(pathname));
+  memcpy(new_file->pathname, pathname, strlen(pathname));
   EXIT_ON_NZ(pthread_mutex_init(&(new_file->mutex), NULL));
 
   return new_file;

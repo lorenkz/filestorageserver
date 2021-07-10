@@ -115,7 +115,7 @@ int store_file(const char* abs_pathname, const char* content, const size_t size,
   }
   name += 1;
   char filename[NAME_MAX] = {0};
-  strncpy(filename, name, strlen(name));
+  memcpy(filename, name, strlen(name));
 
   // check for duplicates
   size_t duplicates = 0;
@@ -282,7 +282,7 @@ int openConnection(const char* sockname, int msec, const struct timespec abstime
   if ((fss_socket_name = calloc(1, sizeof(char) * (strlen(address.sun_path) + 1))) == NULL) {
     goto end;
   }
-  strncpy(fss_socket_name, address.sun_path, strlen(address.sun_path));
+  memcpy(fss_socket_name, address.sun_path, strlen(address.sun_path));
   if (fss_verbose) {
     fprintf(stdout, "[%d]: (%s) '%s': ", getpid(), "openConnection", sockname);
     fprintf(stdout, "successfully connected to socket\n");
