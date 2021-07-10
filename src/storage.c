@@ -51,6 +51,9 @@ void file_dealloc(file_t* file)
  */
 static void file_destroy(storage_t* storage, file_t* file, user_node_t** pending_locks, const char dealloc)
 {
+  if (!storage || !file) {
+    return;
+  }
   LOCK(&(file->ordering));
   LOCK(&(file->mutex));
 
@@ -60,12 +63,12 @@ static void file_destroy(storage_t* storage, file_t* file, user_node_t** pending
 
   // remove the file from the list structure
   if (file->previous) {
-    file->previous->next = file->next;
+    (file->previous)->next = file->next;
   } else {
     storage->head = file->next;
   }
   if (file->next) {
-    file->next->previous = file->previous;
+    (file->next)->previous = file->previous;
   } else {
     storage->tail = file->previous;
   }
@@ -228,6 +231,7 @@ static file_t* storage_find(const storage_t* storage, const char* pathname)
 
 /**
  * Search for a suitable victim file to remove from the storage
+ * (assume that the storage is locked)
  *
  * Return a pointer to the victim on success, NULL on error (set errno)
  */
@@ -699,14 +703,14 @@ int storage_append(storage_t* storage, const char* pathname, const char* new_con
       errno = ENOMEM;
       return -1;
     }
+    // remove the victim file from storage and get the list of users who were waiting to lock it
+    user_node_t* tmp_list = NULL;
+    file_destroy(storage, victim, &tmp_list, 0);
 
     // build a list of removed files
     victim->next = *removed_list;
     *removed_list = victim;
     
-    // get the list of users who were waiting to lock this file
-    user_node_t* tmp_list = NULL;
-    file_destroy(storage, victim, &tmp_list, 0);
     // create a single list of all users to be notified of the file removal
     concatenate_lists(pending_locks, tmp_list);
   }
