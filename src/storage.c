@@ -437,10 +437,10 @@ int storage_open(storage_t* storage, const char* pathname, const int flags, user
       } else {
         // file is already locked
         UNLOCK(&(file->ordering));
-	UNLOCK(&(file->mutex));
-	UNLOCK(&(storage->mutex));
-	errno = EACCES;
-	return -1;
+        UNLOCK(&(file->mutex));
+        UNLOCK(&(storage->mutex));
+        errno = EACCES;
+        return -1;
       }
     }
     // add the user to the list of those who have opened the file
