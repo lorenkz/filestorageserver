@@ -8,7 +8,7 @@
 #define DEF_SOCKET_NAME "tmp/filestorageserver.sk"
 #define DEF_WORKER_POOL_SIZE 5
 #define DEF_STORAGE_MAX_FILE_NUMBER 1000
-#define DEF_STORAGE_MAX_SIZE 128
+#define DEF_STORAGE_MAX_SIZE 134217728
 #define DEF_BACKLOG 32
 
 #endif
