@@ -213,6 +213,7 @@ static void storage_add(storage_t* storage, file_t* file)
 
 /**
  * Search for a file in the storage
+ * (assume that the storage is locked)
  *
  * Return a pointer to the file on success, NULL on error (set errno)
  */
